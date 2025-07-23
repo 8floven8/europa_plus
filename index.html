@@ -63,7 +63,7 @@
         </audio>
         
         <div>
-            <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+            <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
         </div>
     </div>
 
@@ -71,15 +71,35 @@
         const player = document.getElementById('stream');
         const volumeControl = document.getElementById('volume');
         
-        player.volume = volumeControl.value;
+        // Устанавливаем громкость на максимум (1.0)
+        player.volume = 1.0;
+        volumeControl.value = 1.0;
         
+        // Пытаемся автоматически запустить воспроизведение
+        function startPlayback() {
+            player.play()
+                .then(() => console.log("Воспроизведение начато автоматически"))
+                .catch(error => {
+                    console.log("Автовоспроизведение заблокировано:", error);
+                    // Показываем сообщение, если нужно
+                    document.body.innerHTML += '<p style="color:white;background:rgba(0,0,0,0.5);padding:10px;">Нажмите на страницу, чтобы начать воспроизведение</p>';
+                });
+        }
+        
+        // Обработчик изменения громкости
         volumeControl.addEventListener('input', () => {
             player.volume = volumeControl.value;
         });
         
+        // Пытаемся запустить сразу при загрузке
+        window.addEventListener('load', startPlayback);
+        
+        // Альтернативный запуск по клику (если автовоспроизведение заблокировано)
         document.addEventListener('click', () => {
-            player.play().catch(e => console.log(e));
-        }, { once: true });
+            if (player.paused) {
+                startPlayback();
+            }
+        });
     </script>
 </body>
 </html>
