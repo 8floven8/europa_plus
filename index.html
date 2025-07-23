@@ -63,7 +63,7 @@
         </audio>
         
         <div>
-            <input type="range" id="volume" min="0" max="1" step="0.01" value="0.1">
+            <input type="range" id="volume" min="0" max="1" step="0.01" value="0.01">
         </div>
     </div>
 
@@ -71,30 +71,35 @@
         const player = document.getElementById('stream');
         const volumeControl = document.getElementById('volume');
         
-        // Устанавливаем громкость 0.1 при загрузке
-        player.volume = 0.1;
-        volumeControl.value = 0.1;
+        // Устанавливаем громкость 0.01 при загрузке
+        player.volume = 0.01;
+        volumeControl.value = 0.01;
+        
+        // Обработчик изменения громкости
+        volumeControl.addEventListener('input', () => {
+            player.volume = volumeControl.value;
+        });
         
         // Автозапуск при загрузке страницы
-        window.addEventListener('DOMContentLoaded', (event) => {
+        window.addEventListener('load', () => {
             player.play().catch(e => {
-                console.log("Автовоспроизведение заблокировано:", e);
+                console.log('Автовоспроизведение заблокировано:', e);
                 // Если автовоспроизведение заблокировано, показываем кнопку
                 const playButton = document.createElement('button');
-                playButton.textContent = 'Нажмите для воспроизведения';
+                playButton.textContent = 'Play';
                 playButton.style.marginTop = '10px';
-                playButton.style.padding = '5px 10px';
-                document.querySelector('.player').appendChild(playButton);
-                
+                playButton.style.padding = '5px 15px';
+                playButton.style.borderRadius = '5px';
+                playButton.style.border = 'none';
+                playButton.style.backgroundColor = '#000';
+                playButton.style.color = '#fff';
+                playButton.style.cursor = 'pointer';
                 playButton.addEventListener('click', () => {
                     player.play();
                     playButton.remove();
                 });
+                document.querySelector('.player').appendChild(playButton);
             });
-        });
-        
-        volumeControl.addEventListener('input', () => {
-            player.volume = volumeControl.value;
         });
     </script>
 </body>
