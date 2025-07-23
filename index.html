@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Европа Плюс</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            /* Фоновое изображение с растягиванием */
+            background: url('https://i1.sndcdn.com/artworks-v2uR3YDuIr3V6pF4-C84wZw-t500x500.jpg') no-repeat center center fixed;
+            background-size: 100% 100%;
+        }
+        .player {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(0px);
+        }
+        /* Стили для чёрного ползунка */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 200px;
+            height: 5px;
+            background: #000;
+            border-radius: 5px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #000;
+            cursor: pointer;
+        }
+        input[type="range"]::-moz-range-track {
+            background: #000;
+            height: 5px;
+            border-radius: 5px;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #000;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="player">
+        <audio id="stream" autoplay>
+            <source src="http://ep256.hostingradio.ru:8052/europaplus256.mp3" type="audio/mpeg">
+        </audio>
+        
+        <div>
+            <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+        </div>
+    </div>
+
+    <script>
+        const player = document.getElementById('stream');
+        const volumeControl = document.getElementById('volume');
+        
+        player.volume = volumeControl.value;
+        
+        volumeControl.addEventListener('input', () => {
+            player.volume = volumeControl.value;
+        });
+        
+        document.addEventListener('click', () => {
+            player.play().catch(e => console.log(e));
+        }, { once: true });
+    </script>
+</body>
+</html>
